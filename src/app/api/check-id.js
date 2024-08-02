@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const fileBuffer = req.body.file; // Make sure to handle file buffer properly
+      const fileBuffer = req.body.file;
       console.log(fileBuffer);
 
       function convertToBase64(buffer) {
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer YOUR_OPENAI_API_KEY`, // Replace with your actual API key
+            Authorization: `Bearer YOUR_OPENAI_API_KEY`,
           },
         }
       );
