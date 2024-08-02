@@ -169,18 +169,18 @@ export default function Page() {
                   <CircularProgress
                     aria-label="Loading..."
                     size="lg"
-                    color="warning"
+                    color="success"
                   />
                 )}
+                <Button
+                  color="primary"
+                  onClick={handleTryAgain}
+                  disabled={isLoading}
+                >
+                  Try Again
+                </Button>
               </>
             )}
-            <Button
-              color="primary"
-              onClick={handleTryAgain}
-              disabled={isLoading}
-            >
-              Try Again
-            </Button>
             {imagePreview && responseReceived && (
               <>
                 {!flipped && (
