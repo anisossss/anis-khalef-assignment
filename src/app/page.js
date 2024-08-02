@@ -74,6 +74,7 @@ export default function Page() {
   const [file, setFile] = useState(null);
   const [flipped, setFlipped] = useState(false);
   const fileInputRef = useRef(null);
+  const [responseReceived, setResponseReceived] = useState(false);
 
   const handleRotateBack = () => {
     setFlipped(false);
@@ -110,6 +111,7 @@ export default function Page() {
         }
       );
       setData(response.data.reply);
+      setResponseReceived(true);
       setFlipped(true);
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -175,7 +177,7 @@ export default function Page() {
             <Button onClick={handleTryAgain} disabled={isLoading}>
               Try Again
             </Button>
-            {imagePreview && (
+            {imagePreview && responseReceived && (
               <>
                 {!flipped && (
                   <button style={styles.rotateBtn} onClick={handleRotateFront}>
