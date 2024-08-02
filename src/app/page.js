@@ -174,22 +174,26 @@ export default function Page() {
                 )}
               </>
             )}
-            <Button onClick={handleTryAgain} disabled={isLoading}>
+            <Button
+              color="primary"
+              onClick={handleTryAgain}
+              disabled={isLoading}
+            >
               Try Again
             </Button>
             {imagePreview && responseReceived && (
               <>
                 {!flipped && (
-                  <button style={styles.rotateBtn} onClick={handleRotateFront}>
+                  <Button style={styles.rotateBtn} onClick={handleRotateFront}>
                     Rotate
                     <BsArrowClockwise />
-                  </button>
+                  </Button>
                 )}
                 {flipped && (
-                  <button style={styles.rotateBtn} onClick={handleRotateBack}>
+                  <Button style={styles.rotateBtn} onClick={handleRotateBack}>
                     Rotate
                     <BsArrowClockwise />
-                  </button>
+                  </Button>
                 )}
               </>
             )}

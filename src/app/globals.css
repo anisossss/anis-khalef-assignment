@@ -15,6 +15,7 @@ h2 {
   font-size: 25px;
   font-weight: bold;
   color: wheat;
+  margin-bottom: 2em;
 }
 .flip-card {
   background-color: transparent;
