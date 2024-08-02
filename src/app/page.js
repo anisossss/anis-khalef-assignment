@@ -19,20 +19,23 @@ const styles = {
     WebkitBackdropFilter: "blur(10px)",
     border: "1px solid rgba(255, 255, 255, 0.3)",
     position: "relative",
-    height: "30em",
+    height: "100%",
     padding: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   imagePreview: { marginTop: "2em" },
   row: {
     display: "flex",
-    flexDirection: "column",
-    margin: "10px 0",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: "10px",
     textAlign: "left",
   },
   field: {
     display: "flex",
+    flexDirection: "column",
     width: "100%",
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   label: {
     fontSize: "16px",
@@ -53,9 +56,14 @@ const styles = {
     borderRadius: "5px",
     padding: "10px",
     cursor: "pointer",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+    display: "flex",
+    alignItems: "center",
   },
-  buttons: { display: "flex" },
+  buttons: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
 };
 
 export default function Page() {
@@ -67,6 +75,13 @@ export default function Page() {
   const [flipped, setFlipped] = useState(false);
   const fileInputRef = useRef(null);
 
+  const handleRotateBack = () => {
+    setFlipped(false);
+  };
+
+  const handleRotateFront = () => {
+    setFlipped(true);
+  };
   const handleImageUpload = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
@@ -94,7 +109,7 @@ export default function Page() {
           },
         }
       );
-      setData(response.data);
+      setData(response.data.reply);
       setFlipped(true);
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -119,10 +134,10 @@ export default function Page() {
   const renderDataFields = (data) => {
     return Object.entries(data).map(([key, value]) => (
       <div key={key} style={styles.row}>
-        <div style={styles.field}>
-          <span style={styles.label}>{key}</span>
-          <span style={styles.value}>{value}</span>
-        </div>
+        <span style={styles.label}>
+          {key.replace(/([A-Z])/g, " $1").trim()}:
+        </span>
+        <span style={styles.value}>{value}</span>
       </div>
     ));
   };
@@ -131,7 +146,7 @@ export default function Page() {
     <div style={styles.wrapper}>
       <Toaster />
       <div style={styles.container}>
-        <h2>ID CARD OCR</h2>
+        <h2 style={{ color: "#FFF" }}>ID CARD OCR</h2>
         <div className="inputContainer">
           <Input
             type="file"
@@ -142,8 +157,8 @@ export default function Page() {
               <BsUpload className="icon" onClick={handleInputClick} />
             }
           />
-          <br />
-          <div className={styles.buttons}>
+          <br></br>
+          <div style={styles.buttons}>
             {!file ? null : (
               <>
                 <Button onClick={handleSubmit} disabled={isLoading}>
@@ -163,6 +178,18 @@ export default function Page() {
                 Try Again
               </Button>
             )}
+            {!flipped && (
+              <button style={styles.rotateBtn} onClick={handleRotateFront}>
+                Rotate
+                <BsArrowClockwise />
+              </button>
+            )}
+            {flipped && (
+              <button style={styles.rotateBtn} onClick={handleRotateBack}>
+                Rotate
+                <BsArrowClockwise />
+              </button>
+            )}
           </div>
           {imagePreview && (
             <div className={`flip-card ${flipped ? "flipped" : ""}`}>
@@ -178,7 +205,7 @@ export default function Page() {
                         objectFit="contain"
                       />
                     </div>
-                    <p>Scanning</p>
+                    <p style={{ color: "#FFF" }}>Scanning</p>
                     <em></em>
                     <span></span>
                   </div>

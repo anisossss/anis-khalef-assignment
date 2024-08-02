@@ -49,6 +49,7 @@ h2 {
   height: 100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  margin-top: 2em;
 }
 
 .flip-card-front {
