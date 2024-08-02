@@ -1,17 +1,13 @@
 "use client";
-
 import React, { useState, useRef } from "react";
 import { Button, Input, CircularProgress } from "@nextui-org/react";
 import axios from "axios";
 import Image from "next/image";
-import { BsUpload } from "react-icons/bs";
+import { BsUpload, BsArrowClockwise } from "react-icons/bs";
 import toast, { Toaster } from "react-hot-toast";
 
 const styles = {
-  wrapper: {
-    height: "100vh",
-    padding: "10%",
-  },
+  wrapper: { height: "100vh", padding: "10%" },
   container: {
     display: "flex",
     flexDirection: "column",
@@ -26,30 +22,40 @@ const styles = {
     height: "30em",
     padding: 20,
   },
-  imagePreview: {
-    marginTop: "2em",
-  },
+  imagePreview: { marginTop: "2em" },
   row: {
     display: "flex",
-    marginBottom: "10px",
+    flexDirection: "column",
+    margin: "10px 0",
     textAlign: "left",
   },
   field: {
     display: "flex",
-    flexDirection: "column",
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   label: {
     fontSize: "16px",
     color: "#FFF",
     textAlign: "left",
+    width: "45%",
   },
   value: {
     fontSize: "16px",
     textAlign: "left",
     color: "#80FFDC",
+    width: "45%",
   },
+  rotateBtn: {
+    backgroundColor: "#fff",
+    color: "black",
+    border: "none",
+    borderRadius: "5px",
+    padding: "10px",
+    cursor: "pointer",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+  },
+  buttons: { display: "flex" },
 };
 
 export default function Page() {
@@ -59,7 +65,6 @@ export default function Page() {
   const [imagePreview, setImagePreview] = useState(null);
   const [file, setFile] = useState(null);
   const [flipped, setFlipped] = useState(false);
-
   const fileInputRef = useRef(null);
 
   const handleImageUpload = (event) => {
@@ -76,14 +81,12 @@ export default function Page() {
       toast.error("Please select a file first.");
       return;
     }
-
     setIsLoading(true);
     const formData = new FormData();
     formData.append("image", file);
-
     try {
       const response = await axios.post(
-        "http://localhost:4402/api/user/check-id",
+        "https://api.kitchen-savvy.com/api/user/check-id",
         formData,
         {
           headers: {
@@ -91,7 +94,7 @@ export default function Page() {
           },
         }
       );
-      setData(response.data.data);
+      setData(response.data);
       setFlipped(true);
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -126,6 +129,7 @@ export default function Page() {
 
   return (
     <div style={styles.wrapper}>
+      <Toaster />
       <div style={styles.container}>
         <h2>ID CARD OCR</h2>
         <div className="inputContainer">
@@ -141,9 +145,18 @@ export default function Page() {
           <br />
           <div className={styles.buttons}>
             {!file ? null : (
-              <Button onClick={handleSubmit} disabled={isLoading}>
-                Submit
-              </Button>
+              <>
+                <Button onClick={handleSubmit} disabled={isLoading}>
+                  Submit
+                </Button>
+                {isLoading && (
+                  <CircularProgress
+                    aria-label="Loading..."
+                    size="lg"
+                    color="warning"
+                  />
+                )}
+              </>
             )}
             {Object.keys(data).length > 0 && (
               <Button onClick={handleTryAgain} disabled={isLoading}>
@@ -151,13 +164,6 @@ export default function Page() {
               </Button>
             )}
           </div>
-          {isLoading && (
-            <CircularProgress
-              aria-label="Loading..."
-              size="lg"
-              color="warning"
-            />
-          )}
           {imagePreview && (
             <div className={`flip-card ${flipped ? "flipped" : ""}`}>
               <div className="flip-card-inner">
@@ -187,7 +193,6 @@ export default function Page() {
           )}
         </div>
       </div>
-      <Toaster />
     </div>
   );
 }
