@@ -7,7 +7,7 @@ import { BsUpload, BsArrowClockwise } from "react-icons/bs";
 import toast, { Toaster } from "react-hot-toast";
 
 const styles = {
-  wrapper: { height: "100vh", padding: "10%" },
+  wrapper: { height: "100%", padding: "10%" },
   container: {
     display: "flex",
     flexDirection: "column",
@@ -141,7 +141,6 @@ export default function Page() {
       </div>
     ));
   };
-
   return (
     <div style={styles.wrapper}>
       <Toaster />
@@ -173,22 +172,24 @@ export default function Page() {
                 )}
               </>
             )}
-            {Object.keys(data).length > 0 && (
-              <Button onClick={handleTryAgain} disabled={isLoading}>
-                Try Again
-              </Button>
-            )}
-            {!flipped && (
-              <button style={styles.rotateBtn} onClick={handleRotateFront}>
-                Rotate
-                <BsArrowClockwise />
-              </button>
-            )}
-            {flipped && (
-              <button style={styles.rotateBtn} onClick={handleRotateBack}>
-                Rotate
-                <BsArrowClockwise />
-              </button>
+            <Button onClick={handleTryAgain} disabled={isLoading}>
+              Try Again
+            </Button>
+            {imagePreview && (
+              <>
+                {!flipped && (
+                  <button style={styles.rotateBtn} onClick={handleRotateFront}>
+                    Rotate
+                    <BsArrowClockwise />
+                  </button>
+                )}
+                {flipped && (
+                  <button style={styles.rotateBtn} onClick={handleRotateBack}>
+                    Rotate
+                    <BsArrowClockwise />
+                  </button>
+                )}
+              </>
             )}
           </div>
           {imagePreview && (
@@ -211,9 +212,7 @@ export default function Page() {
                   </div>
                 </div>
                 <div className="flip-card-back">
-                  {Object.keys(data).length > 0 && (
-                    <div className="cardContent">{renderDataFields(data)}</div>
-                  )}
+                  <div className="cardContent">{renderDataFields(data)}</div>
                 </div>
               </div>
             </div>
